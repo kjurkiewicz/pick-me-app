@@ -43,7 +43,10 @@
         </div>
             <button @click=" sendData(); addMarker(); getRoute();" class = "search-button" >Search</button>
     </div>
-  </div>
+    </div>
+    <div>
+        Your departure time: {{ departureTime }} min
+    </div>
     <gmap-map
       :center="center"
       :zoom="12"
@@ -57,6 +60,7 @@
         @click="center=m.position"
       ></gmap-marker>
     </gmap-map>
+
   </div>
 </template>
 
@@ -77,7 +81,8 @@ export default {
       destination: {
           lat: 51.109996,
           lng: 16.879974
-      }
+      },
+      departureTime: '5'
     };
   },
 
@@ -90,6 +95,7 @@ export default {
       this.directionsService = new google.maps.DirectionsService()
       this.directionsDisplay = new google.maps.DirectionsRenderer()
       this.directionsDisplay.setMap(this.$refs.map.$mapObject)
+      this.departureTime = 30
       var vm = this
       vm.directionsService.route({
         origin: this.center, // Can be coord or also a search query
