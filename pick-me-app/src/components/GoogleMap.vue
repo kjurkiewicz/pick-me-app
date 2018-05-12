@@ -8,7 +8,7 @@
                     Flight number
                 </div>
                 <div class = "data-input"> 
-                    <input id = "flight-nr" type = "text" class = "input"/>
+                    <input id = "flightNumber" v-model="flightNumber" type = "text" class = "input"/>
                 </div>
 
             </div>
@@ -17,7 +17,7 @@
                     Date
                 </div>
                 <div class = "data-input"> 
-                    <input id = "date" type = "text" class = "input">
+                    <input id = "date" v-model="flightDate" type = "text" class = "input">
                 </div>
 
             </div>
@@ -26,22 +26,22 @@
                     Localization
                 </div>
                 <div class = "data-input"> 
-                    <gmap-autocomplete @place_changed="setPlace" class = "input" id = "localization" >
+                    <gmap-autocomplete @place_changed="setPlace" placeholder='' class = "input" id = "localization" >
                     </gmap-autocomplete>
                 </div>
 
             </div>
-                    <div class = "data-container">
+            <div class = "data-container">
                 <div class = "data-name"> 
                     Telephone number
                 </div>
                 <div class = "data-input"> 
-                    <input id = "tel-nr" type="text" class = "input">
+                    <input id = "tel-nr" v-model="phoneNumber" type="text" class = "input">
                 </div>
 
             </div>
         </div>
-            <button @click="addMarker" class = "search-button" >Search</button>
+            <button @click="addMarker; sendData();" class = "search-button" >Search</button>
     </div>
   </div>
     <gmap-map
@@ -69,10 +69,7 @@ export default {
       center: { lat: 45.508, lng: -73.587 },
       markers: [],
       places: [],
-      currentPlace: null,
-      phoneNumber: null,
-      flightNumber: null,
-      flightDate: null
+      currentPlace: null
     };
   },
 
@@ -85,17 +82,10 @@ export default {
     setPlace(place) {
       this.currentPlace = place;  
     },
-    setPhone(phone){
-        this.phoneNumber = phone;
-    },
-    setFlight(flight){
-        this.flightNumber = flight;
-    },
-    setPhone(date){
-        this.flightDate = date;
-    },
     sendData(){
-
+        console.log('flight: ', this.flightNumber);
+        console.log('data: ', this.flightDate);
+        console.log('phone number ', this.phoneNumber);
     },
     addMarker() {
       if (this.currentPlace) {
