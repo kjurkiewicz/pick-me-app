@@ -17,7 +17,7 @@
                     Date
                 </div>
                 <div class = "data-input"> 
-                    <input id = "date" v-model="flightDate" type = "text" class = "input">
+                    <input id = "date" v-model="flightDate" type = "date" class = "input">
                 </div>
 
             </div>
@@ -41,13 +41,14 @@
 
             </div>
         </div>
-            <button @click="addMarker; sendData();" class = "search-button" >Search</button>
+            <button @click=" sendData(); addMarker(); getRoute();" class = "search-button" >Search</button>
     </div>
   </div>
     <gmap-map
       :center="center"
       :zoom="12"
       style="width:100%;  height: 400px;"
+      ref="map"
     >
       <gmap-marker
         :key="index"
@@ -69,7 +70,14 @@ export default {
       center: { lat: 45.508, lng: -73.587 },
       markers: [],
       places: [],
-      currentPlace: null
+      currentPlace: null,
+      flightNumber: '',
+      phoneNumber: '',
+      flightDate: '',
+      destination: {
+          lat: 51.109996,
+          lng: 16.879974
+      }
     };
   },
 
@@ -78,6 +86,23 @@ export default {
   },
 
   methods: {
+    getRoute: function () {
+      this.directionsService = new google.maps.DirectionsService()
+      this.directionsDisplay = new google.maps.DirectionsRenderer()
+      this.directionsDisplay.setMap(this.$refs.map.$mapObject)
+      var vm = this
+      vm.directionsService.route({
+        origin: this.center, // Can be coord or also a search query
+        destination: this.destination,
+        travelMode: 'DRIVING'
+      }, function (response, status) {
+        if (status === 'OK') {
+          vm.directionsDisplay.setDirections(response) // draws the polygon to the map
+        } else {
+          console.log('Directions request failed due to ' + status)
+        }
+      })
+    },
     // receives a place object via the autocomplete component
     setPlace(place) {
       this.currentPlace = place;  
