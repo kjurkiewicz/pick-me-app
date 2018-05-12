@@ -20,10 +20,10 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Roboto, sans serif';
+  font-weight: normal;
   text-align: center;
+  font-size:1.5em;
   color: #2c3e50;
 }
 </style>
