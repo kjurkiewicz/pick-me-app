@@ -1,13 +1,20 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <ryanair-navbar> </ryanair-navbar>
   </div>
 </template>
 
 <script>
+import Hello from './components/HelloWorld'
+import RyanairNavbar from './components/NavBar'
+import { Nav, Navbar} from 'bootstrap-vue/es/components'
+
 export default {
-  name: 'App'
+  name: 'app',
+  components: {
+    Hello,
+    RyanairNavbar
+  }
 }
 </script>
 
@@ -18,6 +25,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
