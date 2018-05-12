@@ -1,10 +1,10 @@
 <template>
   <div id="ryanair-navbar">
-        <navbar class="navbar blue-navbar">
+        <navbar class = "navbar blue-navbar">
             <navbar-nav>
-                <nav-item class="nav-item nav-link"  >
-                    <a class="nav-link" href = 'https://www.ryanair.com/'>
-                    <img src="../assets/ryanair-blue-logo.png" /> 
+                <nav-item class = "nav-item nav-link"  >
+                    <a class = "nav-link" href = 'https://www.ryanair.com/'>
+                    <img src = "../assets/ryanair-blue-logo.png" class = "nav-img"/> 
                     </a>
                  </nav-item>  
                 <span class = "navbar-separator">
@@ -53,6 +53,7 @@ export default {
         background-color:rgba(7,53,144,1.00);
         height: 3.2em;
         border-bottom: 5px solid #F1C933;
+        margin-bottom: 5px;
     }
     .nav-container{
         position: fixed;
@@ -61,7 +62,7 @@ export default {
     .nav-item{
         color:#fff;
         display: inline-flex;
-        padding-bottom: bottom;
+
     }
     .nav-item:hover{
        color:#F1C933; 
@@ -73,5 +74,8 @@ export default {
         width: 1px;
         display: inline-block;
         top: 6px;
+    }
+    .nav-img{
+        height: 1.3em;
     }
 </style>
