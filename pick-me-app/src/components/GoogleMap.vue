@@ -1,6 +1,6 @@
 <template>
-  <div>
-        <div id = "pick-me-container">
+  <div id = "maps">
+    <div id = "pick-me-container">
     <div id = "search-bar">
         <div id = "inputs">
             <div class = "data-container">
@@ -44,11 +44,6 @@
             <button @click="addMarker" class = "search-button" >Search</button>
     </div>
   </div>
-    <div>
-      <br/>
-
-    </div>
-    <br>
     <gmap-map
       :center="center"
       :zoom="12"
@@ -74,7 +69,10 @@ export default {
       center: { lat: 45.508, lng: -73.587 },
       markers: [],
       places: [],
-      currentPlace: null
+      currentPlace: null,
+      phoneNumber: null,
+      flightNumber: null,
+      flightDate: null
     };
   },
 
@@ -85,7 +83,19 @@ export default {
   methods: {
     // receives a place object via the autocomplete component
     setPlace(place) {
-      this.currentPlace = place;
+      this.currentPlace = place;  
+    },
+    setPhone(phone){
+        this.phoneNumber = phone;
+    },
+    setFlight(flight){
+        this.flightNumber = flight;
+    },
+    setPhone(date){
+        this.flightDate = date;
+    },
+    sendData(){
+
     },
     addMarker() {
       if (this.currentPlace) {
@@ -112,6 +122,10 @@ export default {
 </script>
 
 <style scoped>
+    #maps{
+       margin: auto;
+       width: 80%;
+    }
     #search-bar{
        background-image:  linear-gradient(to top,#1e8adf,#2994e6);
        border-bottom-left-radius: 5px;
