@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <ryanair-navbar> </ryanair-navbar>
-    <pick-me> </pick-me> 
-    <my-map></my-map>
+    <google-map></google-map>
+    <!-- <my-map></my-map> -->
   </div>
 </template>
 
@@ -13,6 +13,7 @@ import PickMe from './components/PickMe'
 import TestComp from './components/TestComp'
 import MyMap from './components/MyMap'
 import { Nav, Navbar} from 'bootstrap-vue/es/components'
+import GoogleMap from "./components/GoogleMap";
 
 export default {
   name: 'app',
@@ -21,7 +22,8 @@ export default {
     RyanairNavbar,
     PickMe,
     TestComp,
-    MyMap
+    MyMap,
+    GoogleMap
   }
 }
 </script>
