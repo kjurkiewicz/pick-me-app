@@ -3,7 +3,7 @@
         <navbar class="navbar blue-navbar">
             <navbar-nav>
                 <nav-item class="nav-item nav-link"  >
-                    <a href = 'https://www.ryanair.com/'>
+                    <a class="nav-link" href = 'https://www.ryanair.com/'>
                     <img src="../assets/ryanair-blue-logo.png" /> 
                     </a>
                  </nav-item>  
@@ -52,14 +52,19 @@ export default {
     .blue-navbar{
         background-color:rgba(7,53,144,1.00);
         height: 3.2em;
+        border-bottom: 5px solid #F1C933;
     }
     .nav-container{
         position: fixed;
         top: 0;
     }
     .nav-item{
-        color:white;
+        color:#fff;
         display: inline-flex;
+        padding-bottom: bottom;
+    }
+    .nav-item:hover{
+       color:#F1C933; 
     }
     .navbar-separator{
         border-right: 1px solid #204A9C;

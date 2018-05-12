@@ -21,6 +21,8 @@ export default {
 <style>
 #app {
   font-family: 'Roboto, sans serif';
+  -webkit-font-smoothing: antialiased;
+  text-decoration-style: solid;
   font-weight: normal;
   text-align: center;
   font-size:1.5em;
