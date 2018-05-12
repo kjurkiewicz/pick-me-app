@@ -49,7 +49,7 @@ export default {
 
     .blue-navbar{
         background-color:rgba(7,53,144,1.00);
-        height: 75px;
+        height: 4em;
     }
     .nav-container{
         position: fixed;
