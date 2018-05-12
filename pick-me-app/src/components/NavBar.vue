@@ -52,7 +52,7 @@ export default {
     .blue-navbar{
         background-color:rgba(7,53,144,1.00);
         height: 3.2em;
-        border-bottom: 5px solid #F1C933;
+        border-bottom: 2px solid #F1C933;
         margin-bottom: 5px;
     }
     .nav-container{

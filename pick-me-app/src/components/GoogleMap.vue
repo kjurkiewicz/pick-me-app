@@ -26,7 +26,7 @@
                     Localization
                 </div>
                 <div class = "data-input"> 
-                    <gmap-autocomplete @place_changed="setPlace" placeholder='' class = "input" id = "localization" >
+                    <gmap-autocomplete @place_changed="setPlace" placeholder='Current localization' class = "input" id = "localization" >
                     </gmap-autocomplete>
                 </div>
 
@@ -37,6 +37,15 @@
                 </div>
                 <div class = "data-input"> 
                     <input id = "tel-nr" v-model="phoneNumber" type="text" class = "input">
+                </div>
+
+            </div>
+             <div class = "data-container">
+                <div class = "data-name"> 
+                    Remind me before
+                </div>
+                <div class = "data-input"> 
+                    <input id = "remind" v-model="remindIn" type="number" class = "input">
                 </div>
 
             </div>
@@ -65,6 +74,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "GoogleMap",
   data() {
@@ -82,7 +93,14 @@ export default {
           lat: 51.109996,
           lng: 16.879974
       },
-      departureTime: '5'
+      destinationAPI: {
+          lat: '',
+          lng: ''
+      },
+      departureTime: 0,
+      currentMarker: null,
+      remindIn: 0,
+      responseBackend: null
     };
   },
 
@@ -92,22 +110,37 @@ export default {
 
   methods: {
     getRoute: function () {
+      console.log('Jestem w getRoute')
       this.directionsService = new google.maps.DirectionsService()
       this.directionsDisplay = new google.maps.DirectionsRenderer()
       this.directionsDisplay.setMap(this.$refs.map.$mapObject)
-      this.departureTime = 30
-      var vm = this
-      vm.directionsService.route({
-        origin: this.center, // Can be coord or also a search query
-        destination: this.destination,
-        travelMode: 'DRIVING'
-      }, function (response, status) {
-        if (status === 'OK') {
-          vm.directionsDisplay.setDirections(response) // draws the polygon to the map
-        } else {
-          console.log('Directions request failed due to ' + status)
-        }
-      })
+      axios.get(`http://10.48.120.158/travel_time?flight_number=`+ this.flightNumber + 
+                '&bufor_time=' + this.remindIn + '&user_location=' + this.currentMarker.lat + ',' + this.currentMarker.lng)
+        .then(response => {
+            this.responseBackend = response.data
+            this.destinationAPI.lat = this.responseBackend.coordinates.latitude
+            this.destinationAPI.lng = this.responseBackend.coordinates.longitude
+            this.departureTime = this.responseBackend.total_duration 
+        // JSON responses are automatically parsed.
+            console.log('Udalo sie ale nie wiem jak ', this.responseBackend)
+            console.log(`http://10.48.120.158/travel_time?flight_number=`+ this.flightNumber + 
+                        '&bufor_time=' + this.remindIn + '&user_location=' + this.currentMarker.lat + ',' + this.currentMarker.lng)
+            console.log('User location: ' + this.currentMarker.lat + ',' + this.currentMarker.lng)
+        var vm = this
+        vm.directionsService.route({
+            origin: this.currentMarker, // Can be coord or also a search query
+            destination: this.destinationAPI,
+            travelMode: 'DRIVING'
+        
+        }, function (response, status) {
+            if (status === 'OK') {
+            vm.directionsDisplay.setDirections(response) // draws the polygon to the map
+            } else {
+            console.log('Directions request failed due to ' + status)
+            }
+        })       
+        })
+
     },
     // receives a place object via the autocomplete component
     setPlace(place) {
@@ -125,6 +158,7 @@ export default {
           lng: this.currentPlace.geometry.location.lng()
         };
         this.markers.push({ position: marker });
+        this.currentMarker = marker;
         this.places.push(this.currentPlace);
         this.center = marker;
         this.currentPlace = null;
@@ -145,7 +179,7 @@ export default {
 <style scoped>
     #maps{
        margin: auto;
-       width: 80%;
+       width: 90%;
     }
     #search-bar{
        background-image:  linear-gradient(to top,#1e8adf,#2994e6);
@@ -167,7 +201,7 @@ export default {
        border-top-width:2px;
        margin: auto;
        margin-bottom: 5px;
-       width: 80%;
+       
     }
     .data-name{
         background-color: rgb(238, 245, 250);
@@ -184,7 +218,7 @@ export default {
        display: inline;
        margin: 5px;       
        float: left;
-       width: 23%;
+       width: 19%;
        border-top-left-radius: 3.23px;
        border-top-right-radius: 3.23px;
        border-top-style: solid;

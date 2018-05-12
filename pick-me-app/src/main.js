@@ -14,6 +14,7 @@ Vue.use(VueGoogleMaps, {
   }
 });
 
+
 Vue.use(BootstrapVue);
 //import router from './router'
 
