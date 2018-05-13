@@ -50,11 +50,13 @@
 
             </div>
         </div>
-            <button @click=" sendData(); addMarker(); getRoute();" class = "search-button" >Search</button>
+            <button @click=" addMarker(); getRoute();" class = "search-button" >Search</button>
     </div>
     </div>
-    <div>
-        Your departure time: {{ departureTime }} min
+    <div v-if="this.show==1">
+        Your travel will lasts: {{ travelTime }} min <br/>
+        Plane arrives at: {{ departureFlight }} <br/>
+        Time to leave: {{ leaveHour }}:{{ leaveMinutes }}<br/>
     </div>
     <gmap-map
       :center="center"
@@ -88,47 +90,71 @@ export default {
       currentPlace: null,
       flightNumber: '',
       phoneNumber: '',
-      flightDate: '',
+      flightDate: '2018-05-13',
       destination: {
           lat: 51.109996,
           lng: 16.879974
       },
       destinationAPI: {
-          lat: '',
-          lng: ''
+          lat: 51.109996,
+          lng: 16.879974
       },
       departureTime: 0,
       currentMarker: null,
-      remindIn: 0,
-      responseBackend: null
+      remindIn: 5,
+      responseBackend: null,
+      travelTime: 0,
+      departureAt: null,
+      currentTime: null,
+      currentHour: 0,
+      currentMinutes: 0,
+      leaveHour: 0,
+      leaveMinutes: '',
+      departureHours: 0,
+      departureMinutes: 0,
+      leavinigTime: null,
+      departureFlight: null,
+      show: 0
     };
   },
-
   mounted() {
     this.geolocate();
+    setInterval(this.updateDateTime, 1000);
   },
 
   methods: {
+    updateDateTime () {
+      let now = new Date()
+      this.currentTime = now
+      this.currentHour = Number(now.getHours())
+      this.currentMinutes = Number(now.getMinutes())
+      this.leavingTime = (((this.departureHours * 60 + this.departureMinutes - this.departureTime) - (this.currentHour * 60 + this.currentMinutes)) / 60)
+      this.leaveHour = Math.floor(this.leavingTime)
+      this.leaveMinutes = ((this.leavingTime - this.leaveHour)*60).toString().substring(0,2)
+    },
     getRoute: function () {
       console.log('Jestem w getRoute')
       this.directionsService = new google.maps.DirectionsService()
       this.directionsDisplay = new google.maps.DirectionsRenderer()
       this.directionsDisplay.setMap(this.$refs.map.$mapObject)
       axios.get(`http://10.48.120.158/travel_time?flight_number=`+ this.flightNumber + 
-                '&bufor_time=' + this.remindIn + '&user_location=' + this.currentMarker.lat + ',' + this.currentMarker.lng)
+                '&bufor_time=' + this.remindIn + '&user_location=' + this.center.lat + ',' + this.center.lng)
         .then(response => {
             this.responseBackend = response.data
             this.destinationAPI.lat = this.responseBackend.coordinates.latitude
             this.destinationAPI.lng = this.responseBackend.coordinates.longitude
             this.departureTime = this.responseBackend.total_duration 
-        // JSON responses are automatically parsed.
-            console.log('Udalo sie ale nie wiem jak ', this.responseBackend)
+            this.travelTime = this.responseBackend.duration_in_traffic
+            this.departureFlight = this.responseBackend.plane_arrival_time
+            this.departureAt = this.responseBackend.arrival_time_minus_total_duration
+            this.departureHours = Number(this.responseBackend.plane_arrival_estimated.substring(0,2))
+            this.departureMinutes = Number(this.responseBackend.plane_arrival_estimated.substring(3,5))
+            this.show = 1
             console.log(`http://10.48.120.158/travel_time?flight_number=`+ this.flightNumber + 
-                        '&bufor_time=' + this.remindIn + '&user_location=' + this.currentMarker.lat + ',' + this.currentMarker.lng)
-            console.log('User location: ' + this.currentMarker.lat + ',' + this.currentMarker.lng)
+                        '&bufor_time=' + this.remindIn + '&user_location=' + this.center.lat + ',' + this.center.lng)
         var vm = this
         vm.directionsService.route({
-            origin: this.currentMarker, // Can be coord or also a search query
+            origin: this.center, // Can be coord or also a search query
             destination: this.destinationAPI,
             travelMode: 'DRIVING'
         
@@ -145,11 +171,6 @@ export default {
     // receives a place object via the autocomplete component
     setPlace(place) {
       this.currentPlace = place;  
-    },
-    sendData(){
-        console.log('flight: ', this.flightNumber);
-        console.log('data: ', this.flightDate);
-        console.log('phone number ', this.phoneNumber);
     },
     addMarker() {
       if (this.currentPlace) {
