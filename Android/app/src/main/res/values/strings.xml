@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PickMeApp</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="arrival_date">Arrival date</string>
+    <string name="Location">Pick your starting location</string>
+    <string name="flight_number">Flight Number</string>
+    <string name="zero">0</string>
+    <string name="time_in_minutes_to_notify">Time in minutes to notify before</string>
+    <string name="show_route">Show Route</string>
+    <string name="duration">Duration:</string>
+    <string name="plane_arrival_time">Plane arrival time:</string>
+</resources>
