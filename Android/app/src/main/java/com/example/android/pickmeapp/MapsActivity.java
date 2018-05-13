@@ -273,19 +273,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 + results.routes[0].legs[0].distance.humanReadable;
     }
 
-    private static void generateNotification(Context context, int timeLeft){
-        Intent notificationIntent = new Intent(context, MapsActivity.class);
+    private  void generateNotification(Context context, int timeLeft){
+       /* Intent notificationIntent = new Intent(context, MapsActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context,"M_CH_ID")
                 .setContentTitle(context.getString(R.string.app_name))
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(intent)
                 .setPriority(PRIORITY_HIGH) //private static final PRIORITY_HIGH = 5;
                 .setContentText("Plane will arrive in "+ timeLeft +" min")
-                .setAutoCancel(false)
-                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(0, mBuilder.build());
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);*/
+        /*NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(0, mBuilder.build());*/
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "M_CH_ID");
+
+        notificationBuilder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("Hearty365")
+                .setPriority(Notification.PRIORITY_MAX) // this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
+                .setContentTitle("Default notification")
+                .setContentText("Plane will arrive in "+ timeLeft +" min")
+                .setContentInfo("Info");
+
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notificationBuilder.build());
+
+
     }
 }
